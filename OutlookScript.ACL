@@ -1,0 +1,62 @@
+@ACL1000
+^LAYOUT   OMail_Results                      294 D.T,
+Recno          PRINT       1   6 0  
+PATH           ASCII       8  64    
+TYPE           ASCII      73   4    
+CODE           PRINT      78   3 0  
+LVL            PRINT      82   3 0  
+FLDCNT         NUMERIC    86   6 0  
+MSGCNT         NUMERIC    93   6 0  
+RCVDT          DATETIME  100  15   PICTURE "YYYYMMDD-hhmmss" WIDTH 27  
+SNDDT          DATETIME  116  15   PICTURE "YYYYMMDD-hhmmss" WIDTH 27  
+FROM           ASCII     132  32    
+SUBJECT        ASCII     165 128    
+^LOGFILE  OutlookScript                       "" "OutlookScript.LOG"
+[PARENT_FOLDER_ID] 0
+^REPORT   Default_View                       OMail_Results                    1 D.T,
+[RLINES] 1
+[LINE] 1
+Recno                PICTURE ""
+[LINE] 1
+PATH                 WIDTH 27 PICTURE ""
+[LINE] 1
+TYPE                 PICTURE ""
+[LINE] 1
+CODE                 PICTURE ""
+[LINE] 1
+LVL                  WIDTH 3 PICTURE ""
+[LINE] 1
+FLDCNT               PICTURE ""
+[LINE] 1
+MSGCNT               WIDTH 6 PICTURE ""
+[LINE] 1
+RCVDT                WIDTH 8
+[LINE] 1
+SNDDT                WIDTH 8
+[LINE] 1
+FROM                 PICTURE ""
+[LINE] 1
+SUBJECT              PICTURE ""
+^FOLDER   Tables                              1375227592
+[PARENT_FOLDER_ID] 0
+^FOLDER   Scripts                             1375227621
+[PARENT_FOLDER_ID] 0
+^BATCH    Extract_Outlook_Info               
+[PARENT_FOLDER_ID] 1375227621
+SET SAFETY OFF
+DELETE all ok
+Comment ********************************************************************
+Comment *** Reads Outlook Mail personal folder and extracts contents - 
+Comment *** Folder name, item class, date (sent and received), subject
+Comment *** Authors: C. Lohyer and D. Coderre cc 2013
+Comment ********************************************************************
+
+DIALOG (DIALOG TITLE "Execute Command - Outlook Extract" WIDTH 480 HEIGHT 362 ) (BUTTONSET TITLE "&OK;&Cancel" AT 132 300 DEFAULT 1 HORZ ) (TEXT TITLE "Extract Outlook Email Info" AT 24 40 ) (EDIT TO "v_Ofolder" AT 216 132 WIDTH 220 DEFAULT "Mailbox" ) (TEXT TITLE "Outlook folder name" AT 36 136 ) (EDIT TO "v_num" AT 204 180 WIDTH 60 DEFAULT "100" ) (TEXT TITLE "Number of emails to extract" AT 24 184 WIDTH 170 HEIGHT 20 ) (TEXT TITLE "Output file name (no spaces)" AT 60 232 WIDTH 112 HEIGHT 28 ) (EDIT TO "v_outfile" AT 204 228 WIDTH 207 HEIGHT 24 DEFAULT "Outlook_Results" ) (TEXT TITLE "CAATS" AT 396 316 ) (TEXT TITLE "Path for VB script (e.g. C:\ACL_EXEC\) - no spaces and no quotes" AT 24 64 WIDTH 146 HEIGHT 45 ) (EDIT TO "v_path" AT 216 84 DEFAULT "C:\ACL_Exec\" )
+
+EXECUTE 'CMD /C %v_path%ACL_OL.vbs "%v_Ofolder%" %v_outfile% %v_num%  '
+
+OPEN %v_outfile%. format OMail_Results
+^FORMAT   OMail_Results                      OMail_Results                    "" "Outlook_Results2." 0 ASCII 
+[PARENT_FOLDER_ID] 1375227592
+[LASTVIEW] "Default_View"
+^OPEN F "OMail_Results"
