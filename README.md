@@ -18,9 +18,10 @@ The combination of ACL, visual basic and Outlook provides auditors and fraud inv
 In ACL
 •  Execute script Extract_Outlook_Info
 •	Specify:
+o Path to VB script - no spaces or quotes (until I figure out how to fix this)
 o	Outlook mailbox name
-o	Outfile name (No spaces)
-o	Number of emails to extract (leave blank for all emails)
+o	Outfile name (No spaces - again, I need to figure out how to fix this)
+o	Number of emails to extract (leave blank for all emails) *** takes about 1 minute for 1,000 emails - be patient ***
 
 The resulting file will be open and available for additional analysis.
 
